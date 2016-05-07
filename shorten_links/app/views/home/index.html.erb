@@ -1,2 +1,17 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<h1>Shorten Links</h1>
+
+<%= form_for :url, url: urls_path do |f| %>
+  <p>
+    <h3>Link To Shorten</h3>
+    <%= f.text_field :full_url %>
+  </p>
+  <p>
+    <%= f.submit %>
+  </p>
+  <p>
+    <% if params['short_url'] %>
+  <h3>Shortened Link</h3>
+    <%=params['short_url'] %>
+    <% end %>
+  </p>
+<% end %>
