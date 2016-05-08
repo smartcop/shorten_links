@@ -1,54 +1,56 @@
 require 'uri'
 
 class UrlsController < ApplicationController
-    def show
-        @url = Url.find(params[:id])
+    def index
+        @record = record_for_short_url?(params['short_url'])
+         @json_output = nil
+        if @record
+            @json_output = {'record': @record, 'users': @record.users}
+        else
+            @json_output = @record 
+        end
+        render :json => @json_output
     end
-    def new
-        @url = Url.new
-    end
+
     def create
-
-        @url = Url.new(url_params)
         @full_url = url_params['full_url'];
-        if valid?(@full_url)
+        if vaild_url?(@full_url)
+            @record = record_for_full_url?(@full_url)
+            if !@record
+                @url = Url.new(url_params)
+                @url.save
+                @url.short_url = create_short_url_path(@url.id)
+                @url.save
 
-            if !Url.exists?(full_url: @full_url)
-                @url.save
-                @url.short_url = create_short_url(@url.id)
-                @url.save
-
-                @request = request.url
-                #this is a hack to remove the urls at the end of the url
-                if @request.length > 4
-                    if @request[-4,4] == 'urls'
-                        @request = @request[0, @request.length - 4]
-                    end
-                end
-                params['short_url'] = @request + @url.short_url
-                @url.save
+                create_short_url(@url)
                 render 'home/index'
-                else
-               	redirect_to url_params['full_url']
-            end
             else
+                create_short_url(@record)
+                render 'home/index'
+            end
+        else
             render 'home/index'
         end
     end
 
     private
 
+    def create_short_url(record) 
+        @request = request.url
+#        #this is a hack to remove the urls at the end of the url
+        if @request.length > 4
+            if @request[-4,4] == 'urls'
+                @request = @request[0, @request.length - 4]
+            end
+        end
+        params['short_url'] = @request + record.short_url
+        params['full_url'] = record.full_url
+    end
+
     @@alphabet = "23456789bcdfghjkmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ-_"
     @@base = @@alphabet.length
 
-    def valid?(uri)
-        !!URI.parse(uri)
-        rescue URI::InvalidURIError
-        false
-    end
-
-    def create_short_url(urlID)
-
+    def create_short_url_path(urlID)
         @short_url = ""
         while urlID > 0
             @short_url = @@alphabet[urlID % @@base] + @short_url
