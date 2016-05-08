@@ -1,6 +1,8 @@
 == README
 
-In a terminal navigate to the shorten_links directory and run "bin/rails server"
+In a terminal navigate to the shorten_links directory and run 
+- "bin/rails server"
+- bin/rake db:migrate RAILS_ENV=development
 
 Converting links.
 Navigate to http://localhost:3000/.
