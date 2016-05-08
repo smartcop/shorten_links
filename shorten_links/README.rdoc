@@ -1,5 +1,7 @@
 == README
 
+In a terminal navigate to the shorten_links directory and run "bin/rails server"
+
 Converting links.
 Navigate to http://localhost:3000/.
 
