@@ -4,10 +4,7 @@ In a terminal navigate to the shorten_links directory and run "bin/rails server"
 
 Converting links.
 Navigate to http://localhost:3000/.
-
-Here you can convert a link to a shorted link.
-* Add error checking in the future
+* Here you can convert a link to a shorted link.
 
 Display JSON stats of a specific short_url
-
-http://localhost:3000/urls?short_url="insert the short url path into here"
+* http://localhost:3000/urls?short_url="insert the short url path into here"

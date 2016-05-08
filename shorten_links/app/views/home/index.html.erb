@@ -16,4 +16,8 @@
     <%=params['full_url'] %>
     <% end %>
   </p>
+  <% if params['error'] %>
+    <h3>Error</h3>
+    <%=params['error'] %>
+  <% end %>
 <% end %>

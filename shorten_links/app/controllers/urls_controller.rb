@@ -29,6 +29,11 @@ class UrlsController < ApplicationController
                 render 'home/index'
             end
         else
+            if @full_url.length > 0
+            params['error'] =  @full_url + ' is an invalid URL'
+        else
+            params['error'] = 'No URL entered'
+        end
             render 'home/index'
         end
     end
